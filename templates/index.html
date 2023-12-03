@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV File Upload</title>
+    <style>
+        
+        #user_query {
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSV File Upload</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="file">Choose a CSV file:</label>
+        <input type="file" name="file" id="file" accept=".csv" required>
+        <br>
+        <input type="submit" value="Upload and Process">
+    </form>
+
+    {% if row_count %}
+        <h2>Total Number of Rows: {{ row_count }}</h2>
+    {% endif %}
+
+    {% if rows and columns %}
+        <h2>First 5 Rows:</h2>
+        <table border="1">
+            <tr>
+                {% for column in columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+            {% for row in rows %}
+                <tr>
+                    {% for value in row %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+
+        <br>
+
+        
+
+
+<form action="/query" method="post">
+    <label for="user_query">Explain in plain English the query you want to be ran on this database:</label>
+    <br>
+    <textarea name="user_query" id="user_query" rows="5" required></textarea>
+    <br>
+    <input type="submit" value="Run Query">
+</form>
+
+
+
+{% if sql_query_result %}
+    <h2>SQL Query Result:</h2>
+    <table border="1">
+        <!-- Display column names as table headers -->
+        <tr>
+            {% for column_name in column_names %}
+                <th>{{ column_name }}</th>
+            {% endfor %}
+        </tr>
+        <!-- Display rows from the SQL query result -->
+        {% for row in sql_query_result %}
+            <tr>
+                {% for value in row %}
+                    <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+    {% endif %}
+    <h4>
+        {{err_msg}}
+    </h4>
+    {% if err_msg == "Table was updated" %}
+    <form method="get" action="{{ url_for('download_file') }}">
+        <button type="submit">Download updated CSV file</button>
+    </form>
+{% endif %}
+</body>
+</html>
