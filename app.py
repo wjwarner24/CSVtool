@@ -9,17 +9,25 @@ app = Flask(__name__)
 client = OpenAI()
 
 
-# Variable to store the user's query
 user_query = ""
 error_message = "Awaiting query"
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 # Function to create a table in SQLite based on a DataFrame
 def create_table_from_df(df, table_name='csv_data'):
     conn = sqlite3.connect('database.db')
     df.to_sql(table_name, conn, index=False, if_exists='replace')
     conn.close()
 
+# Function to translate database into csv file for download to user
 def db_to_csv(db_file, csv_file, table_name):
-    # Connect to the SQLite database
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
 
@@ -68,10 +76,7 @@ def get_column_names(table_name='csv_data'):
     conn.close()
     return [column[1] for column in result]
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
+#Function to download csv file
 @app.route('/download_file', methods=['GET'])
 def download_file():
     # Set up response headers to trigger file download
@@ -84,6 +89,7 @@ def download_file():
 
     return response
 
+#Function to upload csv file
 @app.route('/upload', methods=['POST'])
 def upload():
     global user_query  # Make the variable global to modify its value
@@ -117,7 +123,7 @@ def upload():
 
         return render_template('index.html', row_count=row_count, rows=rows, columns=columns, err_msg=error_message)
     
-# Function to execute user's SQL query
+# Function to execute openAI's SQL query
 def execute_user_query(sql_query):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
@@ -125,7 +131,7 @@ def execute_user_query(sql_query):
     try:
         # Execute the SQL query
         cursor.execute(sql_query)
-
+        print(sql_query)
         # Fetch the result if it's a SELECT query
         result = cursor.fetchall() if sql_query.upper().startswith('SELECT') else None
         
@@ -157,6 +163,7 @@ def get_column_names_from_query(sql_query):
 
     return column_names
 
+#Function to accept and process user query
 @app.route('/query', methods=['POST'])
 def run_query():
     global user_query  # Make the variable global to modify its value
