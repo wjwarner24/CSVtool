@@ -7,3 +7,9 @@ This Flask program allows users to upload CSV files and write queries to be perf
 This program can be extremely useful for quickly understanding some facts about a csv file you are working with. It allows for easy data manipulation and insights, even for those with no technical background. Simply upload your csv file, describe what you want done with the data, and viola! it is done!<br>
 <br>
 Check out my LinkedIn: https://www.linkedin.com/in/williamwarner24/
+
+<h3>More Info</h3>
+1. I am working on making a https site for this project, for now, it is simply hosted on the ip address of the web linux server.<br>
+2. I am also working on making the site prettier. I am not really a frontend dev, as you can tell.<br>
+3. This project took many hours to make, please use it and share it with friends.<br>
+4. Email me at wjwarner24@gmail.com with any questions or concerns.<br>
