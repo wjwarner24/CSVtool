@@ -98,25 +98,29 @@
         <input type="submit" value="Upload and Process">
     </form>
 
-    {% if row_count %}
-        <h2>Total Number of Rows: {{ row_count }}</h2>
-    {% endif %}
+    {% if data_exists %}
+        <h2>Total Number of Rows: {{ num_rows }}</h2>
+    
 
-    {% if rows and columns %}
+    
         <h2>First 5 Rows:</h2>
-        <table border="1">
-            <tr>
-                {% for column in columns %}
-                    <th>{{ column }}</th>
-                {% endfor %}
-            </tr>
-            {% for row in rows %}
+        <table>
+            <thead>
                 <tr>
-                    {% for value in row %}
-                        <td>{{ value }}</td>
+                    {% for column in data.columns %}
+                        <th>{{ column }}</th>
                     {% endfor %}
                 </tr>
-            {% endfor %}
+            </thead>
+            <tbody>
+                {% for index, row in data.iterrows() %}
+                    <tr>
+                        {% for value in row %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
 
         <br>
@@ -131,20 +135,20 @@
     <br>
     <input type="submit" value="Run Query">
 </form>
+{% endif %}
 
 
-
-{% if sql_query_result %}
+{% if result_exists %}
     <h2>SQL Query Result:</h2>
     <table border="1">
         <!-- Display column names as table headers -->
         <tr>
-            {% for column_name in column_names %}
-                <th>{{ column_name }}</th>
+            {% for column in column_names %}
+                <th>{{ column }}</th>
             {% endfor %}
         </tr>
         <!-- Display rows from the SQL query result -->
-        {% for row in sql_query_result %}
+        {% for row in result %}
             <tr>
                 {% for value in row %}
                     <td>{{ value }}</td>
@@ -152,16 +156,17 @@
             </tr>
         {% endfor %}
     </table>
-{% endif %}
 
-    {% endif %}
+
+    
     <h4>
         {{err_msg}}
     </h4>
-    {% if err_msg == "Table was updated" %}
+    {% if update_query %}
     <form method="get" action="{{ url_for('download_file') }}">
         <button type="submit">Download updated CSV file</button>
     </form>
+    {% endif %}
 {% endif %}
 </body>
 </html>
