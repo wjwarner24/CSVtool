@@ -4,36 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About This Project</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        p {
-            line-height: 1.5;
-            color: #555;
-        }
-
-        .return-button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .return-button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <link rel="stylesheet" href="./static/style.css">
 </head>
 <body>
     <h1>About This Project</h1>
@@ -41,7 +12,7 @@
     <a href="https://github.com/wjwarner24">GitHub</a>
     <p>Hello, I'm William Warner, the creator of this project!</p>
 
-    <p>This project allows users to upload CSV files and write queries to be performed on the data in plain english. The program translates the uploaded CSV file to an SQL table, then calls OpenAI API to translate that query into a valid SQL Query, perform that SQL query on the data, and visualize the results in an interactive web interface.</p>
+    <p>This Flask program allows users to upload CSV files and write queries to be performed on the data in plain english. The program translates the uploaded CSV file to an SQL table, then calls OpenAI API to translate that query into a valid SQL Query, perform that SQL query on the data, and visualize the results in an interactive web interface. Furthermore, if the query performed updated the sql table, you may download a new, updated csv file reflecting those changes.</p>
 
     <p>Key Features:</p>
     <ul>
@@ -53,13 +24,12 @@
         <li>Download Functionality: Users can download the processed CSV file for their records.</li>
     </ul>
 
-    <p>This project not only demonstrates technical proficiency but also a keen understanding of data processing and user interface design. It is a testament to my ability to create practical, efficient, and user-friendly applications.</p>
-
+    <p>This program uses: Flask, SQL, Linux, Ubuntu, Apache, Web Server, Python, HTML, CSS</p><br>
+    <p>This program can be extremely useful for quickly understanding some facts about a csv file you are working with. It allows for easy data manipulation and insights, even for those with no technical background. Simply upload your csv file, describe what you want done with the data, and viola! it is done!</p>
     <p>Thank you for exploring this project. If you have any questions or opportunities, feel free to contact me at wjwarner24@gmail.com.</p>
-    <p>Best regards,</p>
-    <p>William Warner</p>
+  
 
-    <!-- Add a button to return to the index page -->
+
     <a href="{{ url_for('index') }}" class="return-button">Return to Home</a>
 </body>
 </html>
