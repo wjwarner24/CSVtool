@@ -1,4 +1,4 @@
-<h1>Welcome to CSV Tool</h1>
+<h1>CSV Tool</h1>
 <h3>This project is now hosted on: http://96.126.127.207/</h3>
 <h3>Created by William Warner</h3><br>
 
@@ -12,4 +12,5 @@ Check out my LinkedIn: https://www.linkedin.com/in/williamwarner24/
 1. I am working on making a https site for this project, for now, it is simply hosted on the ip address of the web linux server.<br>
 2. I am also working on making the site prettier. I am not really a frontend dev, as you can tell.<br>
 3. This project took many hours to make, please use it and share it with friends.<br>
-4. Email me at wjwarner24@gmail.com with any questions or concerns.<br>
+4. I am working on making a demo video, displaying everything this program can do.<br>
+5. Email me at wjwarner24@gmail.com with any questions or concerns.<br>
