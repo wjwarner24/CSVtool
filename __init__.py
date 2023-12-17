@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, session
 import pandas as pd
 import sqlite3
 from openai import OpenAI
@@ -6,7 +6,6 @@ from io import BytesIO
 
 app = Flask(__name__)
 client = OpenAI()
-global user_data
 
 @app.route('/about')
 def about():
@@ -19,23 +18,22 @@ def index():
 #Function when the upload and process button is pushed
 @app.route('/upload', methods=['POST'])
 def upload():
-    global user_data
     if 'file' not in request.files:
         return 'No file part'
     file = request.files['file']
     if file.filename == '':
         return 'No selected file'
     if file:
-        # create a pandas dataframe from the csv file
-        user_data = pd.read_csv(file, index_col=False)
-        #return to the html page with this data
+        user_data = pd.read_csv(file)
+        set_df(user_data)
+        
         return render_template('index.html', data_exists=True, result_exists=False, num_rows = user_data.shape[0], data=user_data.head(5))
 
 
 #Function when user presses 'execute query' button
 @app.route('/query', methods=['POST'])
 def run_query():
-    global user_data
+    user_data = get_df()
     user_query = request.form['user_query']
     
     # Build context
@@ -73,7 +71,9 @@ def run_query():
             column_names = []
             result = []
             temp_query = "SELECT * FROM csv_data;"
-            user_data = pd.read_sql_query(temp_query, connection)
+            updated_data = pd.read_sql_query(temp_query, connection)
+            set_df(updated_data)
+            user_data = updated_data
             update_query = True
             
         connection.close()
@@ -108,6 +108,7 @@ def download_file():
     csv_buffer = BytesIO()
 
     # Write the DataFrame to the buffer as a CSV file
+    user_data = get_df()
     user_data.to_csv(csv_buffer, index=False)
 
     # Set the buffer position to the beginning
@@ -120,7 +121,16 @@ def download_file():
         as_attachment=True,
         download_name="download_file.csv"
     )
-    
-    
+
+def get_df():
+    user_data_dict = session.get('user_data', {})
+    user_data = pd.DataFrame(user_data_dict)
+    return user_data
+
+def set_df(df):
+    user_data_dict = df.to_dict()
+    session['user_data'] = user_data_dict
+
+
 if __name__ == '__main__':
     app.run(debug=True)
